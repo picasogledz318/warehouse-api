@@ -83,18 +83,20 @@ public class VariantService {
         return resp;
     }
 
-    public BaseResponseDto<Variant> update(long id,  VariantRequest variantRequest) {
+    public BaseResponseDto<Variant> update(long itemId, long id, VariantRequest variantRequest) {
         BaseResponseDto<Variant> resp = new BaseResponseDto<>();
         Variant existingVariant = null;
         List<String> listError = new ArrayList<>();
         try{
-            existingVariant = findById(id).getData();
+            variantRequest.setItemId(itemId);
+            variantRequest.setId(id);
+            existingVariant = variantRepository.findByItemIdAndId(itemId, id);
             if(existingVariant != null){
                 variantRequest.setId(existingVariant.getId());
                 resp.setCode(TrxCode.TRX_OK.code());
                 resp.setData(save(variantRequest).getData());
                 resp.setErrors(null);
-                resp.setMessage("Variant id "+id+" successfully updated!");
+                resp.setMessage("Variant id: "+id+", successfully updated!");
             } else {
                 resp.setCode(TrxCode.TRX_NOT_FOUND.code());
                 resp.setMessage(TrxCode.TRX_NOT_FOUND.description() + "by Id: "+id);
@@ -110,18 +112,46 @@ public class VariantService {
     }
 
     /**
-     * Delete by Id.
+     * Delete variant by Id.
      */
     public BaseResponseDto<?> deleteById(long id) {
         Boolean isVariantExist = existsById(id);
         BaseResponseDto<Variant> resp = new BaseResponseDto<>();
         try{
             if(isVariantExist){
-                deleteById(id);
+                variantRepository.deleteById(id);
                 resp.setCode(TrxCode.TRX_DELETED.code());
                 resp.setData(null);
                 resp.setErrors(null);
-                resp.setMessage("Item id "+id+" "+TrxCode.TRX_DELETED);
+                resp.setMessage("Variant id: "+id+" "+TrxCode.TRX_DELETED);
+
+            } else {
+                resp.setCode(TrxCode.TRX_NOT_FOUND.code());
+                resp.setMessage(TrxCode.TRX_NOT_FOUND.description());
+                resp.setData(null);
+                resp.setErrors(null);
+            }
+            return resp;
+        }catch (Exception err){
+            log.error("Error delete variant:{}, trace:{}",err.getMessage(), err.getStackTrace());
+            throw new RuntimeException("Error delete variant:"+err.getMessage());
+        }
+
+    }
+
+    /**
+     * Delete variant by itemId and id.
+     */
+    public BaseResponseDto<?> deleteByItemIdAndId(long itemId, long id) {
+        Boolean isVariantExist = existsByItemIdAndId(itemId, id);
+        BaseResponseDto<Variant> resp = new BaseResponseDto<>();
+        try{
+            if(isVariantExist){
+                variantRepository.deleteByIdAndItemId(itemId, id);
+                resp.setCode(TrxCode.TRX_DELETED.code());
+                resp.setData(null);
+                resp.setErrors(null);
+                resp.setMessage("Variant by itemId: "+itemId+" and variantId: "+id+", "+TrxCode.TRX_DELETED.description());
 
             } else {
                 resp.setCode(TrxCode.TRX_NOT_FOUND.code());
@@ -160,12 +190,12 @@ public class VariantService {
     /**
      * Find variant by id.
      */
-    public BaseResponseDto<Variant> findById(long id) {
-        BaseResponseDto<Variant> resp = new BaseResponseDto<>();
+    public BaseResponseDto<List<Variant>> findById(long id) {
+        BaseResponseDto<List<Variant>> resp = new BaseResponseDto<>();
         boolean isVariantExist = existsById(id);
         if(isVariantExist){
             resp.setCode(TrxCode.TRX_OK.code());
-            resp.setData(findById(id).getData());
+            resp.setData(variantRepository.findById(id).stream().toList());
             resp.setErrors(null);
             resp.setMessage("Data Found!");
         } else {
@@ -199,6 +229,26 @@ public class VariantService {
         return resp;
     }
 
+    /**
+     * Find variant by itemId and variantId.
+     */
+    public BaseResponseDto<Variant> findByItemIdAndId(long itemId, long id) {
+        BaseResponseDto<Variant> resp = new BaseResponseDto<>();
+        boolean isVariantExist = existsById(id);
+        if(isVariantExist){
+            resp.setCode(TrxCode.TRX_OK.code());
+            resp.setData(variantRepository.findByItemIdAndId(itemId, id));
+            resp.setErrors(null);
+            resp.setMessage("Data Found!");
+        } else {
+            resp.setCode(TrxCode.TRX_NOT_FOUND.code());
+            resp.setData(null);
+            resp.setErrors(null);
+            resp.setMessage(TrxCode.TRX_NOT_FOUND.description());
+        }
+
+        return resp;
+    }
 
     /**
      * Check variant existence by id.
@@ -212,6 +262,13 @@ public class VariantService {
      */
     public Boolean existsByItemId(long id) {
         return variantRepository.existsByItemId(id);
+    }
+
+    /**
+     * Check variant existence by itemId and Id.
+     */
+    public Boolean existsByItemIdAndId(long itemId, long id) {
+        return variantRepository.existsByItemIdAndId(itemId, id);
     }
 
 

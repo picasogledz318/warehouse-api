@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/variant/v1")
 @RequiredArgsConstructor
@@ -25,16 +27,16 @@ public class VariantController {
     }
 
     @LogExecutionTime
-    @PutMapping("/update/{id}")
-    public ResponseEntity<BaseResponseDto<Variant>> updateVariant(@PathVariable("id") long id, @RequestBody VariantRequest Variant) {
-        BaseResponseDto<Variant> resp = variantService.update(id, Variant);
+    @PutMapping("/update/items/{itemId}/variants/{id}")
+    public ResponseEntity<BaseResponseDto<Variant>> updateVariant(@PathVariable("itemId") long itemId, @PathVariable("id") long id, @RequestBody VariantRequest variantRequest) {
+        BaseResponseDto<Variant> resp = variantService.update(itemId, id, variantRequest);
         return ResponseEntity.ok(resp);
     }
 
     @LogExecutionTime
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteVariant(@PathVariable("id") long id) {
-        BaseResponseDto<?> resp = variantService.deleteById(id);
+    @DeleteMapping("/delete/items/{itemId}/variants/{id}")
+    public ResponseEntity<?> deleteVariant(@PathVariable("itemId") long itemId, @PathVariable("id") long id) {
+        BaseResponseDto<?> resp = variantService.deleteByItemIdAndId(itemId, id);
         return ResponseEntity.ok(resp);
     }
 
@@ -48,8 +50,22 @@ public class VariantController {
 
     @LogExecutionTime
     @GetMapping("/variants/{id}")
-    public  ResponseEntity<BaseResponseDto<Variant>> findVariantById(@PathVariable("id") int id) {
-        BaseResponseDto<Variant> resp = variantService.findById(id);
+    public  ResponseEntity<BaseResponseDto<List<Variant>>> findVariantById(@PathVariable("id") int id) {
+        BaseResponseDto<List<Variant>> resp = variantService.findById(id);
+        return ResponseEntity.ok(resp);
+    }
+
+    @LogExecutionTime
+    @GetMapping("/items/{itemId}/variants")
+    public  ResponseEntity<BaseResponseDto<List<Variant>>> findVariantByItemId(@PathVariable("itemId") long itemId) {
+        BaseResponseDto<List<Variant>> resp = variantService.findByItemId(itemId);
+        return ResponseEntity.ok(resp);
+    }
+
+    @LogExecutionTime
+    @GetMapping("/items/{itemId}/variants/{id}")
+    public  ResponseEntity<BaseResponseDto<Variant>> findVariantByItemIdAndId(@PathVariable("itemId") long itemId, @PathVariable("id") long id) {
+        BaseResponseDto<Variant> resp = variantService.findByItemIdAndId(itemId, id);
         return ResponseEntity.ok(resp);
     }
 }

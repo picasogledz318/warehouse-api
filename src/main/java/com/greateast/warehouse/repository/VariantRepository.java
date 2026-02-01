@@ -11,5 +11,9 @@ import java.util.List;
  */
 public interface VariantRepository extends JpaRepository<Variant, Long> {
     boolean existsByItemId(long id);
+    boolean existsByItemIdAndId(long itemId, long id);
+    Variant findByItemIdAndId(long itemId, long id);
+    List<Variant> findById(long id);
     List<Variant> findByItemId(long id);
+    void deleteByIdAndItemId(long id, long itemId);
 }
