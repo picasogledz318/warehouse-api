@@ -234,10 +234,12 @@ public class VariantService {
      */
     public BaseResponseDto<Variant> findByItemIdAndId(long itemId, long id) {
         BaseResponseDto<Variant> resp = new BaseResponseDto<>();
-        boolean isVariantExist = existsById(id);
+        boolean isVariantExist = existsByItemIdAndId(itemId, id);
+        Variant searchVariant = null;
         if(isVariantExist){
+            searchVariant = variantRepository.findByItemIdAndId(itemId, id);
             resp.setCode(TrxCode.TRX_OK.code());
-            resp.setData(variantRepository.findByItemIdAndId(itemId, id));
+            resp.setData(searchVariant);
             resp.setErrors(null);
             resp.setMessage("Data Found!");
         } else {

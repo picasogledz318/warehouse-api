@@ -5,11 +5,13 @@ import com.greateast.warehouse.constant.TrxCode;
 import com.greateast.warehouse.constant.TrxStatus;
 import com.greateast.warehouse.model.entity.Payment;
 import com.greateast.warehouse.model.entity.Sales;
+import com.greateast.warehouse.model.entity.Variant;
 import com.greateast.warehouse.model.request.PaymentRequest;
 import com.greateast.warehouse.model.request.SalesRequest;
 import com.greateast.warehouse.model.response.BaseResponseDto;
 import com.greateast.warehouse.repository.PaymentRepository;
 import com.greateast.warehouse.repository.SalesRepository;
+import com.greateast.warehouse.repository.VariantRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -30,6 +32,9 @@ public class PaymentService {
     private final SalesRepository salesRepository;
     private final PaymentRepository paymentRepository;
 
+    private final VariantService variantService;
+    private final VariantRepository variantRepository;
+
     /**
      * Sales payment from sales order.
      * Check if sales data exist bu salesId then process payment and return salesResponse with transaction status SUCCESS (Paid)
@@ -40,7 +45,7 @@ public class PaymentService {
         BaseResponseDto<Payment> resp = new BaseResponseDto<>();
         Sales sales = null; Payment payment = new Payment();
         try{
-            sales = salesRepository.findById(salesId) != null ? salesRepository.findById(salesId).get() : null;
+            sales = salesRepository.findById(salesId) != null && !salesRepository.findById(salesId).isEmpty() ? salesRepository.findById(salesId).get() : null;
             if(sales != null){
                 BigDecimal totalChange = paymentRequest.getTotalPayment().subtract(sales.getTotalOrderPrice());
                 if(totalChange.compareTo(BigDecimal.ZERO) >= 0){
@@ -56,6 +61,17 @@ public class PaymentService {
                     sales.setTrxStatus(TrxStatus.SUCCESS.name());
                     sales = salesRepository.save(sales);
                     log.info("Sales updated:{}",sales);
+
+                    //update stock
+                    //if variant still exists then update variant/unit quantity after payment process success
+                    Variant targetVariant = variantService.findByItemIdAndId(sales.getItemId(), sales.getVariantId()).getData();
+                    log.info("targetVariant: {}",targetVariant);
+                    if(targetVariant!= null){
+                        int remainingStock = targetVariant.getStock() - sales.getOrderQuantity();
+                        targetVariant.setStock(remainingStock);
+                        variantRepository.save(targetVariant);
+                        log.info("Variant after sales got updated:{}",targetVariant);
+                    }
 
                     //return payment response
                     resp.setCode(TrxCode.TRX_SUCCESS.code());
@@ -106,7 +122,7 @@ public class PaymentService {
         boolean isPaymentExist = existsById(id);
         if(isPaymentExist){
             resp.setCode(TrxCode.TRX_OK.code());
-            resp.setData(findById(id).getData());
+            resp.setData(paymentRepository.findById(id).get());
             resp.setErrors(null);
             resp.setMessage("Data Found!");
         } else {

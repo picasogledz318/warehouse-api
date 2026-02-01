@@ -22,8 +22,8 @@ public class StockService {
      * return response insufficient unit if stock is lesser than quantity, return data not found if out of stock.
      * else return message stock available!
      */
-    public BaseResponseDto<?> validateStock(long itemId, long variantId, int quantity) {
-        BaseResponseDto<?> resp = new BaseResponseDto<>();
+    public BaseResponseDto<Variant> validateStock(long itemId, long variantId, int quantity) {
+        BaseResponseDto<Variant> resp = new BaseResponseDto<>();
         Variant variant = variantService.findByItemIdAndId(itemId, variantId).getData();
         if(variant == null){
             resp.setCode(TrxCode.TRX_NOT_FOUND.code());
@@ -38,7 +38,7 @@ public class StockService {
         } else{
             resp.setCode(TrxCode.TRX_STOCK_AVAILABLE.code());
             resp.setMessage(TrxCode.TRX_STOCK_AVAILABLE.description());
-            resp.setData(null);
+            resp.setData(variant);
             resp.setErrors(null);
         }
         return resp;

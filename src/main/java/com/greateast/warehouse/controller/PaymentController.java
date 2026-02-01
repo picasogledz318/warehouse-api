@@ -38,7 +38,7 @@ public class PaymentController {
     }
 
     @LogExecutionTime
-    @GetMapping("/payment/{id}")
+    @GetMapping("/payments/{id}")
     public  ResponseEntity<BaseResponseDto<Payment>> findPaymentById(@PathVariable("id") long id) {
         BaseResponseDto<Payment> resp = paymentService.findById(id);
         return ResponseEntity.ok(resp);

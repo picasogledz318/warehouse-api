@@ -423,7 +423,7 @@
               }
             ],
             "url": {
-              "raw": "http://localhost:8081/warehouse/variant/v1/items/2/variants/4",
+              "raw": "http://localhost:8081/warehouse/variant/v1/items/2/variants/3",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -436,7 +436,7 @@
                 "items",
                 "2",
                 "variants",
-                "4"
+                "3"
               ]
             }
           },
@@ -551,13 +551,14 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8081/actuator/health",
+              "raw": "http://localhost:8081/warehouse/actuator/health",
               "protocol": "http",
               "host": [
                 "localhost"
               ],
               "port": "8081",
               "path": [
+                "warehouse",
                 "actuator",
                 "health"
               ]
@@ -660,7 +661,95 @@
     },
     {
       "name": "Payment",
-      "item": []
+      "item": [
+        {
+          "name": "Sales Payment",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"currency\": \"IDR\",\r\n    \"totalPayment\": \"250.0\",\r\n    \"remark\": \"promo payment\"\r\n   \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8081/warehouse/payments/v1/payment/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "warehouse",
+                "payments",
+                "v1",
+                "payment",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Payments",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "JSESSIONID=E3C365B14417DC060BEDDA00FDAFFFBB; JSESSIONID=DEA2194F2605C1F09BB36C6CF3093C95"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8081/warehouse/payments/v1/payments",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "warehouse",
+                "payments",
+                "v1",
+                "payments"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Payment by Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "JSESSIONID=E3C365B14417DC060BEDDA00FDAFFFBB; JSESSIONID=DEA2194F2605C1F09BB36C6CF3093C95"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8081/warehouse/payments/v1/payments/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "warehouse",
+                "payments",
+                "v1",
+                "payments",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
     }
   ]
 }

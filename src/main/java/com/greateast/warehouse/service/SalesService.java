@@ -43,8 +43,9 @@ public class SalesService {
      */
     public BaseResponseDto<Sales> salesOrder(SalesRequest salesRequest) {
         BaseResponseDto<Sales> resp = new BaseResponseDto<>();
+        BaseResponseDto<Variant> varResp = new BaseResponseDto<>();
         try{
-            BaseResponseDto<?> validateResp = stockService.validateStock(salesRequest.getItemId() ,salesRequest.getVariantId(), salesRequest.getOrderQuantity());
+            BaseResponseDto<Variant> validateResp = stockService.validateStock(salesRequest.getItemId() ,salesRequest.getVariantId(), salesRequest.getOrderQuantity());
             //validate if stock available then proceed for sales
             if(validateResp.getCode().equalsIgnoreCase(TrxCode.TRX_STOCK_AVAILABLE.code())){
                 Sales sales = new Sales();
@@ -54,19 +55,16 @@ public class SalesService {
                 sales = salesRepository.save(sales);
                 log.info("Sales saved:{}",sales);
 
-                //if variant still exists then update variant/unit quantity after sales
-                Variant targetVariant = variantService.findByItemIdAndId(salesRequest.getItemId(), sales.getId()).getData();
-                if(targetVariant!= null){
-                    int remainingStock = targetVariant.getStock() - salesRequest.getOrderQuantity();
-                    targetVariant.setStock(remainingStock);
-                    variantRepository.save(targetVariant);
-                    log.info("Variant after sales got updated:{}",targetVariant);
-                }
                 //return sales response
                 resp.setCode(TrxCode.TRX_PENDING.code());
                 resp.setData(sales);
                 resp.setErrors(null);
                 resp.setMessage(TrxCode.TRX_PENDING.description());
+            } else {
+                resp.setCode(TrxCode.TRX_NOT_FOUND.code());
+                resp.setMessage(TrxCode.TRX_NOT_FOUND.description());
+                resp.setData(null);
+                resp.setErrors(null);
             }
         }catch (Exception err){
             log.error("Error sales:{}, trace:{}",err.getMessage(), err.getStackTrace());
@@ -75,8 +73,6 @@ public class SalesService {
 
         return  resp;
     }
-
-
 
 
     /**
