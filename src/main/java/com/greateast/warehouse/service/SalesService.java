@@ -60,7 +60,7 @@ public class SalesService {
                     int remainingStock = targetVariant.getStock() - salesRequest.getOrderQuantity();
                     targetVariant.setStock(remainingStock);
                     variantRepository.save(targetVariant);
-                    log.info("Variant after sales got updated:{}",sales);
+                    log.info("Variant after sales got updated:{}",targetVariant);
                 }
                 //return sales response
                 resp.setCode(TrxCode.TRX_PENDING.code());
@@ -107,7 +107,7 @@ public class SalesService {
         boolean isSalesExist = existsById(id);
         if(isSalesExist){
             resp.setCode(TrxCode.TRX_OK.code());
-            resp.setData(findById(id).getData());
+            resp.setData(salesRepository.findById(id).get());
             resp.setErrors(null);
             resp.setMessage("Data Found!");
         } else {
