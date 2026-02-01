@@ -39,8 +39,8 @@ public class InitialLoader implements CommandLineRunner {
         v2.setSku("TS-BLUE-L");
         v2.setColor("Blue");
         v2.setSize("L");
-        v1.setCapitalPrice(new BigDecimal("95.20"));
-        v2.setCapitalPrice(new BigDecimal("109.99"));
+        v2.setCapitalPrice(new BigDecimal("95.20"));
+        v2.setSalesPrice(new BigDecimal("109.99"));
         v2.setStock(5);
 
         variantRepository.saveAll(List.of(v1, v2));

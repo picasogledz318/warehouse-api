@@ -1,0 +1,30 @@
+spring:
+  profiles:
+    active: ${spring.active.profile:local}
+  application:
+    name: warehouse-service
+  servlet:
+    max-file-size: 5MB
+    max-request-size: 5MB
+server:
+  servlet:
+    context-path: /warehouse
+  port: 8081
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh,health,info,env,metrics
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: always
+      show-components: always
+      probes:
+        enabled: true
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
