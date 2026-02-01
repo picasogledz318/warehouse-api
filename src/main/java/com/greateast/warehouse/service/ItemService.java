@@ -7,6 +7,7 @@ import com.greateast.warehouse.model.entity.Variant;
 import com.greateast.warehouse.model.request.ItemRequest;
 import com.greateast.warehouse.model.request.VariantRequest;
 import com.greateast.warehouse.model.response.BaseResponseDto;
+import com.greateast.warehouse.model.response.ItemResponse;
 import com.greateast.warehouse.repository.ItemRepository;
 import com.greateast.warehouse.repository.VariantRepository;
 import lombok.RequiredArgsConstructor;
@@ -50,6 +51,39 @@ public class ItemService {
             variantService.saveAll(updateListVariants);
             resp.setCode(TrxCode.TRX_SAVED.code());
             resp.setData(result);
+            resp.setErrors(null);
+            resp.setMessage(TrxCode.TRX_SAVED.description());
+        }catch (Exception err){
+            log.error("Error saveItem:{}, trace:{}",err.getMessage(), err.getStackTrace());
+            throw new RuntimeException("Error saveItem:"+err.getMessage());
+
+        }
+        return resp;
+    }
+
+    /**
+     * Create or update item.
+     */
+    public BaseResponseDto<ItemResponse> saveAndReturnWithVariant(ItemRequest itemRequest) {
+        BaseResponseDto<ItemResponse> resp = new BaseResponseDto<>();
+        Item data = new Item(); List<VariantRequest> updateListVariants = new ArrayList<>();
+        ItemResponse itemResponse = new ItemResponse();
+        try{
+            BeanUtils.copyProperties(itemRequest, data);
+            Item result = itemRepository.save(data);
+            log.info("item saved:{}",result);
+            itemRequest.getVariants().forEach(variant -> {
+                variant.setItemId(result.getId());
+                updateListVariants.add(variant);
+            });
+            log.info("Saving variants:{}",updateListVariants);
+            variantService.saveAll(updateListVariants);
+            List<Variant> newVariants = variantService.findByItemId(result.getId()).getData();
+            //copy result to item response
+            BeanUtils.copyProperties(result, itemResponse);
+            itemResponse.setVariants(newVariants);
+            resp.setCode(TrxCode.TRX_SAVED.code());
+            resp.setData( itemResponse);
             resp.setErrors(null);
             resp.setMessage(TrxCode.TRX_SAVED.description());
         }catch (Exception err){

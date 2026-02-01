@@ -62,7 +62,8 @@ public class VariantService {
                 v.setSku(req.getSku());
                 v.setColor(req.getColor());
                 v.setSize(req.getSize());
-                v.setSalesPrice(req.getPrice());
+                v.setCapitalPrice(req.getCapitalPrice());
+                v.setSalesPrice(req.getSalesPrice());
                 v.setStock(req.getStock());
                 return v;
             }).toList();
@@ -177,10 +178,39 @@ public class VariantService {
     }
 
     /**
+     * Find variant by itemId.
+     */
+    public BaseResponseDto<List<Variant>> findByItemId(long itemId) {
+        BaseResponseDto<List<Variant>> resp = new BaseResponseDto<>();
+        boolean isVariantExist = existsByItemId(itemId);
+        if(isVariantExist){
+            resp.setCode(TrxCode.TRX_OK.code());
+            resp.setData(variantRepository.findByItemId(itemId));
+            resp.setErrors(null);
+            resp.setMessage("Data Found!");
+        } else {
+            resp.setCode(TrxCode.TRX_NOT_FOUND.code());
+            resp.setData(null);
+            resp.setErrors(null);
+            resp.setMessage(TrxCode.TRX_NOT_FOUND.description());
+        }
+
+        return resp;
+    }
+
+
+    /**
      * Check variant existence by id.
      */
     public Boolean existsById(long id) {
         return variantRepository.existsById(id);
+    }
+
+    /**
+     * Check variant existence by itemId.
+     */
+    public Boolean existsByItemId(long id) {
+        return variantRepository.existsByItemId(id);
     }
 
 

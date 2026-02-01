@@ -25,8 +25,11 @@ public class VariantRequest extends Auditable {
     private String color;
     private String size;
 
-    // Price of this variant
-    private BigDecimal price;
+    // Capital Price of this variant
+    private BigDecimal capitalPrice;
+
+    // Sales Price of this variant
+    private BigDecimal salesPrice;
 
     // Current available stock
     private Integer stock;

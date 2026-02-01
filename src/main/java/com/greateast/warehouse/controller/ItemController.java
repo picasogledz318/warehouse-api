@@ -3,6 +3,7 @@ package com.greateast.warehouse.controller;
 import com.greateast.warehouse.model.entity.Item;
 import com.greateast.warehouse.model.request.ItemRequest;
 import com.greateast.warehouse.model.response.BaseResponseDto;
+import com.greateast.warehouse.model.response.ItemResponse;
 import com.greateast.warehouse.service.ItemService;
 import com.greateast.warehouse.util.logresponsetime.LogExecutionTime;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +25,8 @@ public class ItemController {
 
     @PostMapping("/create")
     @LogExecutionTime
-    public ResponseEntity<BaseResponseDto<Item>> createItem(@RequestBody ItemRequest item) throws Exception{
-        BaseResponseDto<Item> resp = itemService.save(item);
+    public ResponseEntity<BaseResponseDto<?>> createItem(@RequestBody ItemRequest item) throws Exception{
+        BaseResponseDto<ItemResponse> resp = itemService.saveAndReturnWithVariant(item);
         return ResponseEntity.ok(resp);
     }
 
