@@ -1,7 +1,7 @@
 
 package com.greateast.warehouse.repository;
 
-import com.greateast.warehouse.model.entity.Variant;
+import com.greateast.warehouse.model.request.Variant;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

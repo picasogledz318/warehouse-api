@@ -1,7 +1,8 @@
+
 package com.greateast.warehouse.controller;
 
-import com.greateast.warehouse.model.entity.Item;
-import com.greateast.warehouse.model.request.ItemRequest;
+import com.greateast.warehouse.constant.TrxCode;
+import com.greateast.warehouse.model.request.Item;
 import com.greateast.warehouse.model.response.BaseResponseDto;
 import com.greateast.warehouse.service.ItemService;
 import com.greateast.warehouse.util.logresponsetime.LogExecutionTime;
@@ -9,7 +10,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * REST controller for managing items.
@@ -24,14 +29,14 @@ public class ItemController {
 
     @PostMapping("/create")
     @LogExecutionTime
-    public ResponseEntity<BaseResponseDto<Item>> createItem(@RequestBody ItemRequest item) throws Exception{
+    public ResponseEntity<BaseResponseDto<Item>> createItem(@RequestBody Item item) throws Exception{
         BaseResponseDto<Item> resp = itemService.save(item);
         return ResponseEntity.ok(resp);
     }
 
     @LogExecutionTime
     @PutMapping("/update/{id}")
-    public ResponseEntity<BaseResponseDto<Item>> updateItem(@PathVariable("id") long id, @RequestBody ItemRequest item) {
+    public ResponseEntity<BaseResponseDto<Item>> updateItem(@PathVariable("id") long id, @RequestBody Item item) {
         BaseResponseDto<Item> resp = itemService.update(id, item);
         return ResponseEntity.ok(resp);
     }

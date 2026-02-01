@@ -24,7 +24,7 @@ Controller → Service → Repository → Database
 
 ## Run Locally
 ```bash
-mvn clean package
+mvn clean package -P local
 mvn spring-boot:run
 ```
 

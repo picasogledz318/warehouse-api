@@ -11,7 +11,7 @@ import java.util.List;
  */
 @Entity
 @Data
-public class Item {
+public class Item extends Auditable {
 
     @Id
     @GeneratedValue

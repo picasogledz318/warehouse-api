@@ -2,17 +2,13 @@
 package com.greateast.warehouse.service;
 
 import com.greateast.warehouse.constant.TrxCode;
-import com.greateast.warehouse.model.entity.Item;
-import com.greateast.warehouse.model.entity.Variant;
-import com.greateast.warehouse.model.request.ItemRequest;
-import com.greateast.warehouse.model.request.VariantRequest;
+import com.greateast.warehouse.model.request.Item;
+import com.greateast.warehouse.model.request.Variant;
 import com.greateast.warehouse.model.response.BaseResponseDto;
 import com.greateast.warehouse.repository.ItemRepository;
 import com.greateast.warehouse.repository.VariantRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.weaver.ast.Var;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -35,19 +31,16 @@ public class ItemService {
     /**
      * Create or update item.
      */
-    public BaseResponseDto<Item> save(ItemRequest itemRequest) {
+    public BaseResponseDto<Item> save(Item item) {
         BaseResponseDto<Item> resp = new BaseResponseDto<>();
-        Item data = new Item(); List<VariantRequest> updateListVariants = new ArrayList<>();
         try{
-            BeanUtils.copyProperties(itemRequest, data);
-            Item result = itemRepository.save(data);
+            Item result = itemRepository.save(item);
             log.info("item saved:{}",result);
-            itemRequest.getVariants().forEach(variant -> {
-                variant.setItemId(result.getId());
-                updateListVariants.add(variant);
-            });
-            log.info("Saving variants:{}",updateListVariants);
-            variantService.saveAll(updateListVariants);
+            for (Variant variant: item.getVariants()) {
+                //variant.setItemId(item.getId());
+                variantService.save(variant);
+                log.info("variant saved:{}",variant);
+            }
             resp.setCode(TrxCode.TRX_SAVED.code());
             resp.setData(result);
             resp.setErrors(null);
@@ -60,7 +53,7 @@ public class ItemService {
         return resp;
     }
 
-    public BaseResponseDto<Item> update(long id,  ItemRequest item) {
+    public BaseResponseDto<Item> update(long id,  Item item) {
         BaseResponseDto<Item> resp = new BaseResponseDto<>();
         Item existingItem = null;
         List<String> listError = new ArrayList<>();
@@ -95,10 +88,10 @@ public class ItemService {
         try{
             if(isItemExist){
                 deleteById(id);
-                resp.setCode(TrxCode.TRX_DELETED.code());
+                resp.setCode(TrxCode.TRX_OK.code());
                 resp.setData(null);
                 resp.setErrors(null);
-                resp.setMessage("Item id "+id+" "+TrxCode.TRX_DELETED);
+                resp.setMessage("Item id "+id+" successfully deleted!");
 
             } else {
                 resp.setCode(TrxCode.TRX_NOT_FOUND.code());

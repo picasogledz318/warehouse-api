@@ -4,14 +4,11 @@ public enum TrxCode {
 
     TRX_OK("0000", 200, "OK"),
     TRX_SAVED("0201", 201, "Data is successfully saved"),
-    TRX_PENDING("0202", 202, "Transaction pending"),
-    TRX_SUCCESS("0203", 203, "Transaction success"),
-
-    TRX_CANCELLED("0204", 204, "Transaction cancelled"),
-    TRX_DELETED("0205", 205, "Deleted successfully"),
+    TRX_DELETED("0200", 200, "Data deleted successfully"),
     TRX_NOT_FOUND("0404", 404, "Data cannot be found"),
     TRX_BAD_REQUEST("0400", 400, "Bad request data"),
-    TRX_UNKNOWN_ERROR("0500", 500, "Unknown error, contact your admin!"),
+    TRX_UNPROCESSABLE_ENTITY("0422", 422, "Cannot proceed data"),
+    TRX_UNKNOWN("0500", 500, "Unknown error, contact your admin!"),
     TRX_SERVICE_NOT_AVAILABLE("0503", 503, "Error Service is not available!");
 
     private String code;

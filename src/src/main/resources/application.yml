@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: ${spring.active.profile:local}
+    active: @spring.active.profile@
   application:
     name: warehouse-service
   servlet:

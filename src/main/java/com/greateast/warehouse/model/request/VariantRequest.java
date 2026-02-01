@@ -1,21 +1,23 @@
 
 package com.greateast.warehouse.model.request;
 
-import jakarta.persistence.*;
+import com.greateast.warehouse.model.auditrail.Auditable;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 
 /**
- * Variant represents a sellable version of an item.
+ * VariantRequest represents a sellable version of an item variant's request.
  * Example: T-Shirt size M color Red
  */
-@Entity
-@Data
-public class Variant {
 
-    @Id
-    @GeneratedValue
+@Data
+public class VariantRequest extends Auditable {
+
     private Long id;
+    private Long itemId;
 
     // Stock keeping unit
     private String sku;
@@ -29,10 +31,4 @@ public class Variant {
     // Current available stock
     private Integer stock;
 
-    /**
-     * Many variants belong to one item.
-     */
-    @ManyToOne
-    @JoinColumn(name = "item_id")
-    private Item item;
 }
