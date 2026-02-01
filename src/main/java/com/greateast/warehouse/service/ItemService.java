@@ -43,12 +43,14 @@ public class ItemService {
             BeanUtils.copyProperties(itemRequest, data);
             Item result = itemRepository.save(data);
             log.info("item saved:{}",result);
-            itemRequest.getVariants().forEach(variant -> {
-                variant.setItemId(result.getId());
-                updateListVariants.add(variant);
-            });
-            log.info("Saving variants:{}",updateListVariants);
-            variantService.saveAll(updateListVariants);
+            if(itemRequest.getVariants() != null && !itemRequest.getVariants().isEmpty()){
+                itemRequest.getVariants().forEach(variant -> {
+                    variant.setItemId(result.getId());
+                    updateListVariants.add(variant);
+                });
+                log.info("Saving variants:{}",updateListVariants);
+                variantService.saveAll(updateListVariants);
+            }
             resp.setCode(TrxCode.TRX_SAVED.code());
             resp.setData(result);
             resp.setErrors(null);
@@ -72,17 +74,19 @@ public class ItemService {
             BeanUtils.copyProperties(itemRequest, data);
             Item result = itemRepository.save(data);
             log.info("item saved:{}",result);
-            itemRequest.getVariants().forEach(variant -> {
-                variant.setItemId(result.getId());
-                updateListVariants.add(variant);
-            });
-            log.info("Saving variants:{}",updateListVariants);
-            variantService.saveAll(updateListVariants);
-            List<Variant> newVariants = variantService.findByItemId(result.getId()).getData();
+            resp.setCode(TrxCode.TRX_SAVED.code());
+            if(itemRequest.getVariants() != null && !itemRequest.getVariants().isEmpty()){
+                itemRequest.getVariants().forEach(variant -> {
+                    variant.setItemId(result.getId());
+                    updateListVariants.add(variant);
+                });
+                log.info("Saving variants:{}",updateListVariants);
+                variantService.saveAll(updateListVariants);
+                List<Variant> newVariants = variantService.findByItemId(result.getId()).getData();
+                itemResponse.setVariants(newVariants);
+            }
             //copy result to item response
             BeanUtils.copyProperties(result, itemResponse);
-            itemResponse.setVariants(newVariants);
-            resp.setCode(TrxCode.TRX_SAVED.code());
             resp.setData( itemResponse);
             resp.setErrors(null);
             resp.setMessage(TrxCode.TRX_SAVED.description());
@@ -94,16 +98,16 @@ public class ItemService {
         return resp;
     }
 
-    public BaseResponseDto<Item> update(long id,  ItemRequest item) {
-        BaseResponseDto<Item> resp = new BaseResponseDto<>();
+    public BaseResponseDto<ItemResponse> update(long id,  ItemRequest item) {
+        BaseResponseDto<ItemResponse> resp = new BaseResponseDto<>();
         Item existingItem = null;
         List<String> listError = new ArrayList<>();
         try{
-            existingItem = findById(id).getData();
+            existingItem = itemRepository.findById(id);
             if(existingItem != null){
                 item.setId(existingItem.getId());
                 resp.setCode(TrxCode.TRX_OK.code());
-                resp.setData(save(item).getData());
+                resp.setData(saveAndReturnWithVariant(item).getData());
                 resp.setErrors(null);
                 resp.setMessage("Item id "+id+" successfully updated!");
             } else {
@@ -128,7 +132,7 @@ public class ItemService {
         BaseResponseDto<Item> resp = new BaseResponseDto<>();
         try{
             if(isItemExist){
-                deleteById(id);
+                itemRepository.deleteById(id);
                 resp.setCode(TrxCode.TRX_DELETED.code());
                 resp.setData(null);
                 resp.setErrors(null);
@@ -176,7 +180,7 @@ public class ItemService {
         boolean isItemExist = existsById(id);
         if(isItemExist){
             resp.setCode(TrxCode.TRX_OK.code());
-            resp.setData(findById(id).getData());
+            resp.setData(itemRepository.findById(id));
             resp.setErrors(null);
             resp.setMessage("Data Found!");
         } else {

@@ -32,8 +32,8 @@ public class ItemController {
 
     @LogExecutionTime
     @PutMapping("/update/{id}")
-    public ResponseEntity<BaseResponseDto<Item>> updateItem(@PathVariable("id") long id, @RequestBody ItemRequest item) {
-        BaseResponseDto<Item> resp = itemService.update(id, item);
+    public ResponseEntity<BaseResponseDto<ItemResponse>> updateItem(@PathVariable("id") long id, @RequestBody ItemRequest item) {
+        BaseResponseDto<ItemResponse> resp = itemService.update(id, item);
         return ResponseEntity.ok(resp);
     }
 

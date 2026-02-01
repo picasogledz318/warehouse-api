@@ -58,6 +58,7 @@ public class VariantService {
         try{
             List<Variant> entities = requests.stream().map(req -> {
                 Variant v = new Variant();
+                if(req.getId() != null) v.setId(req.getId());
                 v.setItemId(req.getItemId());
                 v.setSku(req.getSku());
                 v.setColor(req.getColor());
