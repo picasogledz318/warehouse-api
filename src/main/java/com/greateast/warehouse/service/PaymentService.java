@@ -42,7 +42,7 @@ public class PaymentService {
         try{
             sales = salesRepository.findById(salesId) != null ? salesRepository.findById(salesId).get() : null;
             if(sales != null){
-                BigDecimal totalChange = paymentRequest.getTotalPayment().subtract(sales.getTotalPriceOrder());
+                BigDecimal totalChange = paymentRequest.getTotalPayment().subtract(sales.getTotalOrderPrice());
                 if(totalChange.compareTo(BigDecimal.ZERO) >= 0){
                     BeanUtils.copyProperties(paymentRequest, payment);
                     payment.setPaymentStatus(TrxStatus.SUCCESS.name());

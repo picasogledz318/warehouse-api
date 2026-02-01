@@ -26,13 +26,13 @@ public class Sales extends Auditable {
 
     private int orderQuantity;
 
-    private BigDecimal totalPriceOrder;
+    private BigDecimal totalOrderPrice;
 
     private String trxStatus;
 
     private String remark;
 
-    @Column(name = "payment_id", nullable = false)
+    @Column(name = "payment_id", nullable = true)
     private Long paymentId;
 
 

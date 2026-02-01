@@ -36,8 +36,8 @@ public class StockService {
             resp.setData(null);
             resp.setErrors(null);
         } else{
-            resp.setCode(TrxCode.TRX_OK.code());
-            resp.setMessage("Stock available");
+            resp.setCode(TrxCode.TRX_STOCK_AVAILABLE.code());
+            resp.setMessage(TrxCode.TRX_STOCK_AVAILABLE.description());
             resp.setData(null);
             resp.setErrors(null);
         }

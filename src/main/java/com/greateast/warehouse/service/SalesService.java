@@ -11,6 +11,7 @@ import com.greateast.warehouse.model.request.PaymentRequest;
 import com.greateast.warehouse.model.request.SalesRequest;
 import com.greateast.warehouse.model.response.BaseResponseDto;
 import com.greateast.warehouse.repository.SalesRepository;
+import com.greateast.warehouse.repository.VariantRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -30,6 +31,10 @@ public class SalesService {
 
     private final SalesRepository salesRepository;
     private final StockService stockService;
+    private final VariantService variantService;
+    private final VariantRepository variantRepository;
+
+
 
     /**
      * Sales order from stock in warehouse.
@@ -39,16 +44,30 @@ public class SalesService {
     public BaseResponseDto<Sales> salesOrder(SalesRequest salesRequest) {
         BaseResponseDto<Sales> resp = new BaseResponseDto<>();
         try{
-            stockService.validateStock(salesRequest.getItemId() ,salesRequest.getVariantId(), salesRequest.getOrderQuantity());
-            Sales sales = new Sales();
-            BeanUtils.copyProperties(salesRequest, sales);
-            sales = salesRepository.save(sales);
-            log.info("Sales saved:{}",sales);
-            resp.setCode(TrxCode.TRX_PENDING.code());
-            sales.setTrxStatus(TrxStatus.PENDING.name());
-            resp.setData(sales);
-            resp.setErrors(null);
-            resp.setMessage(TrxCode.TRX_PENDING.description());
+            BaseResponseDto<?> validateResp = stockService.validateStock(salesRequest.getItemId() ,salesRequest.getVariantId(), salesRequest.getOrderQuantity());
+            //validate if stock available then proceed for sales
+            if(validateResp.getCode().equalsIgnoreCase(TrxCode.TRX_STOCK_AVAILABLE.code())){
+                Sales sales = new Sales();
+                BeanUtils.copyProperties(salesRequest, sales);
+                sales.setTrxStatus(TrxStatus.PENDING.name());
+                sales.setTotalOrderPrice(salesRequest.getTotalOrderPrice());
+                sales = salesRepository.save(sales);
+                log.info("Sales saved:{}",sales);
+
+                //if variant still exists then update variant/unit quantity after sales
+                Variant targetVariant = variantService.findByItemIdAndId(salesRequest.getItemId(), sales.getId()).getData();
+                if(targetVariant!= null){
+                    int remainingStock = targetVariant.getStock() - salesRequest.getOrderQuantity();
+                    targetVariant.setStock(remainingStock);
+                    variantRepository.save(targetVariant);
+                    log.info("Variant after sales got updated:{}",sales);
+                }
+                //return sales response
+                resp.setCode(TrxCode.TRX_PENDING.code());
+                resp.setData(sales);
+                resp.setErrors(null);
+                resp.setMessage(TrxCode.TRX_PENDING.description());
+            }
         }catch (Exception err){
             log.error("Error sales:{}, trace:{}",err.getMessage(), err.getStackTrace());
             throw new RuntimeException("Error sales:"+err.getMessage());
