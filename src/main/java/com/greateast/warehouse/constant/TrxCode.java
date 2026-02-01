@@ -9,7 +9,8 @@ public enum TrxCode {
 
     TRX_CANCELLED("0204", 204, "Transaction cancelled"),
     TRX_DELETED("0205", 205, "Deleted successfully"),
-    TRX_NOT_FOUND("0404", 404, "Data cannot be found"),
+    TRX_NOT_FOUND("0404", 404, "Data cannot be found!"),
+    TRX_CAMNOT_PROCEED("0422", 404, "Insufficient unit!"),
     TRX_BAD_REQUEST("0400", 400, "Bad request data"),
     TRX_UNKNOWN_ERROR("0500", 500, "Unknown error, contact your admin!"),
     TRX_SERVICE_NOT_AVAILABLE("0503", 503, "Error Service is not available!");

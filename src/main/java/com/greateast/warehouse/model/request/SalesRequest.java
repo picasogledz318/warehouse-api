@@ -1,5 +1,6 @@
 package com.greateast.warehouse.model.request;
 
+import com.greateast.warehouse.model.auditrail.Auditable;
 import jakarta.persistence.Column;
 import lombok.Data;
 
@@ -10,7 +11,7 @@ import java.math.BigDecimal;
  * Example: Sales for many items such as: manuT-Shirt variant Black color, Shoes variant Adidas, Laptop variant Lenovo
  */
 @Data
-public class SalesRequest {
+public class SalesRequest extends Auditable {
 
     private Long itemId;
 

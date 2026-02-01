@@ -39,7 +39,7 @@ public class SalesService {
     public BaseResponseDto<Sales> salesOrder(SalesRequest salesRequest) {
         BaseResponseDto<Sales> resp = new BaseResponseDto<>();
         try{
-            stockService.validateStock(salesRequest.getVariantId(), salesRequest.getOrderQuantity());
+            stockService.validateStock(salesRequest.getItemId() ,salesRequest.getVariantId(), salesRequest.getOrderQuantity());
             Sales sales = new Sales();
             BeanUtils.copyProperties(salesRequest, sales);
             sales = salesRepository.save(sales);

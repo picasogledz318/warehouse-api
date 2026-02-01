@@ -1,5 +1,6 @@
 package com.greateast.warehouse.model.request;
 
+import com.greateast.warehouse.model.auditrail.Auditable;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -9,7 +10,7 @@ import java.math.BigDecimal;
  * Example: Sales for many items such as: manuT-Shirt variant Black color, Shoes variant Adidas, Laptop variant Lenovo
  */
 @Data
-public class PaymentRequest {
+public class PaymentRequest extends Auditable {
 
     private String currency;
     private BigDecimal totalPayment;
