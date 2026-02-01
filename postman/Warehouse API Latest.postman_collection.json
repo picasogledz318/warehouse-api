@@ -1,0 +1,666 @@
+{
+  "info": {
+    "_postman_id": "98c781bd-4d4f-40cf-9ce7-fbbd16be95f4",
+    "name": "Warehouse API Latest",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "4365305"
+  },
+  "item": [
+    {
+      "name": "Item",
+      "item": [
+        {
+          "name": "Create Item With Variant",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Cookie",
+                "value": "JSESSIONID=E3C365B14417DC060BEDDA00FDAFFFBB; JSESSIONID=DEA2194F2605C1F09BB36C6CF3093C95"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Polo Shirt\",\n    \"description\": \"Polo shirt\",\n    \"variants\" : [\n        {\n            \"sku\": \"PS-BO-XL\",\n            \"color\": \"blue ocean\",\n            \"size\": \"L\",\n            \"capitalPrice\": \"89.50\",\n            \"salesPrice\": \"89.50\",\n            \"stock\": \"10\"\n        }\n    ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8081/warehouse/item/v1/create",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "warehouse",
+                "item",
+                "v1",
+                "create"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Item",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"T-Shirt\",\r\n    \"description\": \"Basic shirt\"\r\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8081/warehouse/item/v1/create",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "warehouse",
+                "item",
+                "v1",
+                "create"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Item by Id",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\":\"T-Shirt\",\"description\":\"Basic Cool Cotton T-shirt\"}"
+            },
+            "url": {
+              "raw": "http://localhost:8081/warehouse/item/v1/update/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "warehouse",
+                "item",
+                "v1",
+                "update",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Item with variant",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Polo Shirt\",\r\n    \"description\": \"Polo shirt\",\r\n    \"variants\" : [\r\n        {\r\n            \"id\" : \"3\",\r\n            \"sku\": \"PS-BO-DXL\",\r\n            \"color\": \"blue ocean cool\",\r\n            \"size\": \"Double XL\",\r\n            \"capitalPrice\": \"92.20\",\r\n            \"salesPrice\": \"120.50\",\r\n            \"stock\": \"10\"\r\n        }\r\n    ]\r\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8081/warehouse/item/v1/update/2",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "warehouse",
+                "item",
+                "v1",
+                "update",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Item by Id",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8081/warehouse/item/v1/delete/3",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "warehouse",
+                "item",
+                "v1",
+                "delete",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Items",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8081/warehouse/item/v1/items",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "warehouse",
+                "item",
+                "v1",
+                "items"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Item By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8081/warehouse/item/v1/items/2",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "warehouse",
+                "item",
+                "v1",
+                "items",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Variant",
+      "item": [
+        {
+          "name": "Delete Variant by ItemId and VariantId",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8081/warehouse/variant/v1/delete/items/2/variants/4",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "warehouse",
+                "variant",
+                "v1",
+                "delete",
+                "items",
+                "2",
+                "variants",
+                "4"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create New Variant By ItemId",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Cookie",
+                "value": "JSESSIONID=E3C365B14417DC060BEDDA00FDAFFFBB; JSESSIONID=DEA2194F2605C1F09BB36C6CF3093C95"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"itemId\": 2,\n    \"sku\": \"PS-BO-DXL\",\n    \"color\": \"blue ocean cool\",\n    \"size\": \"Double XL\",\n    \"capitalPrice\": 92.20,\n    \"salesPrice\": 120.50,\n    \"stock\": 10\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8081/warehouse/variant/v1/create",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "warehouse",
+                "variant",
+                "v1",
+                "create"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Variant by ItemId and VariantId",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"sku\": \"PS-BO-DXL\",\r\n    \"color\": \"blue ocean cool\",\r\n    \"size\": \"Double XL\",\r\n    \"capitalPrice\": 122.20,\r\n    \"salesPrice\": 150.50,\r\n    \"stock\": 10\r\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8081/warehouse/variant/v1/update/items/2/variants/4",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "warehouse",
+                "variant",
+                "v1",
+                "update",
+                "items",
+                "2",
+                "variants",
+                "4"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Variants",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "JSESSIONID=E3C365B14417DC060BEDDA00FDAFFFBB; JSESSIONID=DEA2194F2605C1F09BB36C6CF3093C95"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8081/warehouse/variant/v1/variants",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "warehouse",
+                "variant",
+                "v1",
+                "variants"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Variants by Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "JSESSIONID=E3C365B14417DC060BEDDA00FDAFFFBB; JSESSIONID=DEA2194F2605C1F09BB36C6CF3093C95"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8081/warehouse/variant/v1/variants/2",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "warehouse",
+                "variant",
+                "v1",
+                "variants",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Variants by ItemId",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "JSESSIONID=E3C365B14417DC060BEDDA00FDAFFFBB; JSESSIONID=DEA2194F2605C1F09BB36C6CF3093C95"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8081/warehouse/variant/v1/items/2/variants",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "warehouse",
+                "variant",
+                "v1",
+                "items",
+                "2",
+                "variants"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Variants by ItemId and variantId",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "JSESSIONID=E3C365B14417DC060BEDDA00FDAFFFBB; JSESSIONID=DEA2194F2605C1F09BB36C6CF3093C95"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8081/warehouse/variant/v1/items/2/variants/4",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "warehouse",
+                "variant",
+                "v1",
+                "items",
+                "2",
+                "variants",
+                "4"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Stock",
+      "item": [
+        {
+          "name": "Stock Validation by itemId and VariantId (Insufficient Unit/Stock)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"itemId\": 2,\r\n    \"variantId\": 4,\r\n    \"quantity\": 100\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8081/warehouse/stock/v1/validate",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "warehouse",
+                "stock",
+                "v1",
+                "validate"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Stock Validation by itemId and VariantId (Out of Stock)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"itemId\": 5,\r\n    \"variantId\": 4,\r\n    \"quantity\": 60\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8081/warehouse/stock/v1/validate",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "warehouse",
+                "stock",
+                "v1",
+                "validate"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Stock Validation by itemId and VariantId (Stock available)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"itemId\": 2,\r\n    \"variantId\": 4,\r\n    \"quantity\": 5\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8081/warehouse/stock/v1/validate",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "warehouse",
+                "stock",
+                "v1",
+                "validate"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "health-check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8081/actuator/health",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "actuator",
+                "health"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Sales",
+      "item": [
+        {
+          "name": "Sales Order",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"itemId\": 2,\r\n    \"variantId\": 3,\r\n    \"orderQuantity\": \"2\",\r\n    \"totalOrderPrice\": \"241.0\",\r\n    \"remark\": \"promo sales\"\r\n   \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8081/warehouse/sales/v1/order",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "warehouse",
+                "sales",
+                "v1",
+                "order"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Sales",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "JSESSIONID=E3C365B14417DC060BEDDA00FDAFFFBB; JSESSIONID=DEA2194F2605C1F09BB36C6CF3093C95"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8081/warehouse/sales/v1/sales",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "warehouse",
+                "sales",
+                "v1",
+                "sales"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Sales by salesId",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "JSESSIONID=E3C365B14417DC060BEDDA00FDAFFFBB; JSESSIONID=DEA2194F2605C1F09BB36C6CF3093C95"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8081/warehouse/sales/v1/sales/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "warehouse",
+                "sales",
+                "v1",
+                "sales",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Payment",
+      "item": []
+    }
+  ]
+}
