@@ -195,6 +195,29 @@
           "response": []
         },
         {
+          "name": "Get Items With Variants",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8081/warehouse/item/v1/items/variants",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "warehouse",
+                "item",
+                "v1",
+                "items",
+                "variants"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "Get Item By Id",
           "request": {
             "method": "GET",
@@ -578,7 +601,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"itemId\": 2,\r\n    \"variantId\": 3,\r\n    \"orderQuantity\": \"2\",\r\n    \"totalOrderPrice\": \"241.0\",\r\n    \"remark\": \"promo sales\"\r\n   \r\n}",
+              "raw": "{\r\n    \"itemId\": 2,\r\n    \"variantId\": 3,\r\n    \"orderQuantity\": \"3\",\r\n    \"remark\": \"promo sales\"\r\n   \r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -669,7 +692,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"currency\": \"IDR\",\r\n    \"totalPayment\": \"250.0\",\r\n    \"remark\": \"promo payment\"\r\n   \r\n}",
+              "raw": "{\r\n    \"currency\": \"IDR\",\r\n    \"totalPayment\": \"370.0\",\r\n    \"remark\": \"promo payment\"\r\n   \r\n}",
               "options": {
                 "raw": {
                   "language": "json"
