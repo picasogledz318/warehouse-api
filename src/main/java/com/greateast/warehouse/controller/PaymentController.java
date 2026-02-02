@@ -24,8 +24,8 @@ public class PaymentController {
 
     @PostMapping("/payment/{salesId}")
     @LogExecutionTime
-    public ResponseEntity<BaseResponseDto<Payment>> payment(@PathVariable("salesId") long salesId, @RequestBody PaymentRequest paymentRequest) throws Exception{
-        BaseResponseDto<Payment> resp = paymentService.payment(salesId, paymentRequest);
+    public ResponseEntity<BaseResponseDto<?>> payment(@PathVariable("salesId") long salesId, @RequestBody PaymentRequest paymentRequest) throws Exception{
+        BaseResponseDto<?> resp = paymentService.payment(salesId, paymentRequest);
         return ResponseEntity.ok(resp);
     }
 

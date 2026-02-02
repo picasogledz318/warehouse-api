@@ -4,7 +4,6 @@ package com.greateast.warehouse.service;
 import com.greateast.warehouse.constant.TrxCode;
 import com.greateast.warehouse.model.entity.Variant;
 import com.greateast.warehouse.model.response.BaseResponseDto;
-import com.greateast.warehouse.repository.VariantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,8 +30,8 @@ public class StockService {
             resp.setData(null);
             resp.setErrors(null);
         } else if (variant.getStock() < quantity) {
-            resp.setCode(TrxCode.TRX_CAMNOT_PROCEED.code());
-            resp.setMessage(TrxCode.TRX_CAMNOT_PROCEED.description());
+            resp.setCode(TrxCode.TRX_INSUFFICIENT_STOCK.code());
+            resp.setMessage(TrxCode.TRX_INSUFFICIENT_STOCK.description());
             resp.setData(null);
             resp.setErrors(null);
         } else{

@@ -41,8 +41,9 @@ public class PaymentService {
      * else return sales data not found
      * Throwable any exceptions.
      */
-    public BaseResponseDto<Payment> payment(long salesId, PaymentRequest paymentRequest) {
+    public BaseResponseDto<?> payment(long salesId, PaymentRequest paymentRequest) {
         BaseResponseDto<Payment> resp = new BaseResponseDto<>();
+        BaseResponseDto<Sales> salesResp = new BaseResponseDto<>();
         Sales sales = null; Payment payment = new Payment();
         try{
             sales = salesRepository.findById(salesId) != null && !salesRepository.findById(salesId).isEmpty() ? salesRepository.findById(salesId).get() : null;
@@ -79,12 +80,19 @@ public class PaymentService {
                     resp.setData(payment);
                     resp.setErrors(null);
                     resp.setMessage(TrxCode.TRX_SUCCESS.description());
+                } else {
+                    salesResp.setCode(TrxCode.TRX_INSUFFICIENT_PAYMENT.code());
+                    salesResp.setData(sales);
+                    salesResp.setErrors(null);
+                    salesResp.setMessage(TrxCode.TRX_INSUFFICIENT_PAYMENT.description() + " for transaction salesId: "+salesId);
+                    return salesResp;
                 }
             } else {
-                resp.setCode(TrxCode.TRX_NOT_FOUND.code());
-                resp.setData(null);
-                resp.setErrors(null);
-                resp.setMessage(TrxCode.TRX_NOT_FOUND.description());
+                salesResp.setCode(TrxCode.TRX_NOT_FOUND.code());
+                salesResp.setData(sales);
+                salesResp.setErrors(null);
+                salesResp.setMessage(TrxCode.TRX_NOT_FOUND.description());
+                return salesResp;
             }
         }catch (Exception err){
             log.error("Error sales:{}, trace:{}",err.getMessage(), err.getStackTrace());
