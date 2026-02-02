@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * REST controller for managing item's variants.
+ */
 @RestController
 @RequestMapping("/variant/v1")
 @RequiredArgsConstructor

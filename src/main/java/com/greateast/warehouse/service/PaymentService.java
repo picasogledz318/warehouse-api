@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 
 /**
- * Service responsible for sales logic.
+ * Service responsible for sales payment logic.
  */
 @Service
 @RequiredArgsConstructor
