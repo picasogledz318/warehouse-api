@@ -61,8 +61,8 @@ public class SalesService {
                 resp.setErrors(null);
                 resp.setMessage(TrxCode.TRX_PENDING.description());
             } else {
-                resp.setCode(TrxCode.TRX_NOT_FOUND.code());
-                resp.setMessage(TrxCode.TRX_NOT_FOUND.description());
+                resp.setCode(validateResp.getCode());
+                resp.setMessage(validateResp.getMessage());
                 resp.setData(null);
                 resp.setErrors(null);
             }
