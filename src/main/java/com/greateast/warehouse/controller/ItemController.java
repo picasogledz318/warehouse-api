@@ -53,6 +53,14 @@ public class ItemController {
     }
 
     @LogExecutionTime
+    @GetMapping("/items/variants")
+    public ResponseEntity<BaseResponseDto<?>> getItemsWithVariant(@RequestParam(defaultValue = "0") int page,
+                                                       @RequestParam(defaultValue = "10") int size) {
+        BaseResponseDto<Page<ItemResponse>> resp = itemService.findAllWithVariant(page, size);
+        return ResponseEntity.ok(resp);
+    }
+
+    @LogExecutionTime
     @GetMapping("/items/{id}")
     public  ResponseEntity<BaseResponseDto<Item>> findItemById(@PathVariable("id") int id) {
         BaseResponseDto<Item> resp = itemService.findById(id);

@@ -51,7 +51,10 @@ public class SalesService {
                 Sales sales = new Sales();
                 BeanUtils.copyProperties(salesRequest, sales);
                 sales.setTrxStatus(TrxStatus.PENDING.name());
-                sales.setTotalOrderPrice(salesRequest.getTotalOrderPrice());
+                Variant targetVariant = validateResp.getData();
+                //auto calculate total order price from variant
+                BigDecimal totalOrderPrice = targetVariant.getSalesPrice().multiply((BigDecimal.valueOf(salesRequest.getOrderQuantity())));
+                sales.setTotalOrderPrice(totalOrderPrice);
                 sales = salesRepository.save(sales);
                 log.info("Sales saved:{}",sales);
 

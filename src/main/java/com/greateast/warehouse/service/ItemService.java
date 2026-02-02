@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.weaver.ast.Var;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -170,6 +171,37 @@ public class ItemService {
             throw new RuntimeException("Error find all items:"+err.getMessage());
         }
         return resp ;
+    }
+
+    /**
+     * Retrieve all items with pagination.
+     */
+    public BaseResponseDto<Page<ItemResponse>> findAllWithVariant(int page, int size) {
+
+        BaseResponseDto<Page<ItemResponse>> resp = new BaseResponseDto<>();
+        Page<ItemResponse> pageItemResp = resp.getData();
+        List<ItemResponse> itemResponses = new ArrayList<>();
+        try{
+            Page<Item> pageItem = itemRepository.findAll(PageRequest.of(page, size));
+            pageItem.forEach(item -> {
+                ItemResponse itemResponse = new ItemResponse();
+                BeanUtils.copyProperties(item, itemResponse);
+                List<Variant> itemVariants = variantService.findByItemId(item.getId()).getData();
+                itemResponse.setVariants(itemVariants);
+                itemResponses.add(itemResponse);
+            });
+            pageItemResp = new PageImpl<>(itemResponses, pageItem.getPageable(), pageItem.getTotalElements());
+            BeanUtils.copyProperties(pageItem, pageItemResp);
+            resp.setCode(TrxCode.TRX_OK.code());
+            resp.setData(pageItemResp);
+            resp.setErrors(null);
+            if(pageItem != null && !pageItem.isEmpty()) resp.setMessage("All items");
+            else resp.setMessage("No Data");
+        }catch (Exception err){
+            log.error("Error find all items:{}, trace:{}",err.getMessage(), err.getStackTrace());
+            throw new RuntimeException("Error find all items:"+err.getMessage());
+        }
+            return resp ;
     }
 
     /**
