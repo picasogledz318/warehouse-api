@@ -37,7 +37,7 @@ public class PaymentService {
 
     /**
      * Sales payment from sales order.
-     * Check if sales data exist bu salesId then process payment and return salesResponse with transaction status SUCCESS (Paid)
+     * Check if sales data exist by salesId then process payment and return salesResponse with transaction status SUCCESS (Paid)
      * else return sales data not found
      * Throwable any exceptions.
      */
