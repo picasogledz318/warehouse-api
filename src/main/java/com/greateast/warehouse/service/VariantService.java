@@ -147,18 +147,21 @@ public class VariantService {
         BaseResponseDto<Variant> resp = new BaseResponseDto<>();
         try{
             if(isVariantExist){
-                variantRepository.deleteByIdAndItemId(itemId, id);
-                resp.setCode(TrxCode.TRX_DELETED.code());
-                resp.setData(null);
-                resp.setErrors(null);
-                resp.setMessage("Variant by itemId: "+itemId+" and variantId: "+id+", "+TrxCode.TRX_DELETED.description());
+                int isDeleted = variantRepository.deleteVariantByIdAndItemId(id, itemId);
+                if(isDeleted == 1){
+                    resp.setCode(TrxCode.TRX_DELETED.code());
+                    resp.setData(null);
+                    resp.setErrors(null);
+                    resp.setMessage("Variant by itemId: "+itemId+" and variantId: "+id+", "+TrxCode.TRX_DELETED.description());
+                    return  resp;
+                }
 
-            } else {
+            }
                 resp.setCode(TrxCode.TRX_NOT_FOUND.code());
                 resp.setMessage(TrxCode.TRX_NOT_FOUND.description());
                 resp.setData(null);
                 resp.setErrors(null);
-            }
+
             return resp;
         }catch (Exception err){
             log.error("Error delete variant:{}, trace:{}",err.getMessage(), err.getStackTrace());
