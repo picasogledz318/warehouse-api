@@ -41,3 +41,7 @@ docker-compose up --build
 
 ## Postman
 Import postman/WarehouseAPI.postman_collection.json
+
+## Repository
+git repo: https://github.com/picasogledz318/warehouse-api
+
