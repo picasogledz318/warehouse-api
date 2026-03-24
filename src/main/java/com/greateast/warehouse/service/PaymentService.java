@@ -38,7 +38,7 @@ public class PaymentService {
     /**
      * Sales payment from sales order.
      * Check if sales data exist by salesId then process payment and return salesResponse with transaction status SUCCESS (Paid)
-     *  if sales trxStatus is 'CANCELLED' then return message 'transaction cannot be proceed based on trxStatus' include with sales data
+     *  if sales trxStatus is 'CANCELLED' then return message 'transaction cannot be proceeded based on trxStatus' include with sales data
      * else return sales data not found
      * Throwable any exceptions.
      */
