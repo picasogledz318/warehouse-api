@@ -256,7 +256,7 @@
               }
             ],
             "url": {
-              "raw": "http://localhost:8081/warehouse/variant/v1/delete/items/2/variants/4",
+              "raw": "http://localhost:8081/warehouse/variant/v1/delete/items/2/variants/5",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -270,7 +270,36 @@
                 "items",
                 "2",
                 "variants",
-                "4"
+                "5"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Variant by VariantId",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8081/warehouse/variant/v1/delete/variants/5",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "warehouse",
+                "variant",
+                "v1",
+                "delete",
+                "variants",
+                "5"
               ]
             }
           },
@@ -436,7 +465,7 @@
           "response": []
         },
         {
-          "name": "Get Variants by ItemId and variantId",
+          "name": "Get Variants by Item Id and VariantId",
           "request": {
             "method": "GET",
             "header": [
@@ -539,7 +568,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"itemId\": 2,\r\n    \"variantId\": 4,\r\n    \"quantity\": 5\r\n}",
+              "raw": "{\r\n    \"itemId\": 2,\r\n    \"variantId\": 3,\r\n    \"quantity\": 5\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -626,6 +655,37 @@
           "response": []
         },
         {
+          "name": "Sales Order Cancellation",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"salesId\": 2,\r\n    \"remark\": \"broken product\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8081/warehouse/sales/v1/order-cancellation",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "warehouse",
+                "sales",
+                "v1",
+                "order-cancellation"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "Get Sales",
           "request": {
             "method": "GET",
@@ -653,7 +713,7 @@
           "response": []
         },
         {
-          "name": "Get Sales by salesId",
+          "name": "Get Sales by Id",
           "request": {
             "method": "GET",
             "header": [
@@ -700,7 +760,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8081/warehouse/payments/v1/payment/1",
+              "raw": "http://localhost:8081/warehouse/payments/v1/payment/2",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -711,7 +771,7 @@
                 "payments",
                 "v1",
                 "payment",
-                "1"
+                "2"
               ]
             }
           },

@@ -4,6 +4,7 @@ import com.greateast.warehouse.model.entity.Item;
 import com.greateast.warehouse.model.entity.Sales;
 import com.greateast.warehouse.model.request.ItemRequest;
 import com.greateast.warehouse.model.request.PaymentRequest;
+import com.greateast.warehouse.model.request.SalesCancellationRequest;
 import com.greateast.warehouse.model.request.SalesRequest;
 import com.greateast.warehouse.model.response.BaseResponseDto;
 import com.greateast.warehouse.service.SalesService;
@@ -28,6 +29,13 @@ public class SalesController {
     @LogExecutionTime
     public ResponseEntity<BaseResponseDto<Sales>> salesOrder(@RequestBody SalesRequest salesRequest) throws Exception{
         BaseResponseDto<Sales> resp = salesService.salesOrder(salesRequest);
+        return ResponseEntity.ok(resp);
+    }
+
+    @PostMapping("/order-cancellation")
+    @LogExecutionTime
+    public ResponseEntity<BaseResponseDto<Sales>> salesOrderCancellation(@RequestBody SalesCancellationRequest salesCancellationRequest) throws Exception{
+        BaseResponseDto<Sales> resp = salesService.salesOrderCancellation(salesCancellationRequest);
         return ResponseEntity.ok(resp);
     }
 

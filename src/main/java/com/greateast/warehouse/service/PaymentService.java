@@ -38,6 +38,7 @@ public class PaymentService {
     /**
      * Sales payment from sales order.
      * Check if sales data exist by salesId then process payment and return salesResponse with transaction status SUCCESS (Paid)
+     *  if sales trxStatus is 'CANCELLED' then return message 'transaction cannot be proceed based on trxStatus' include with sales data
      * else return sales data not found
      * Throwable any exceptions.
      */
@@ -48,6 +49,14 @@ public class PaymentService {
         try{
             sales = salesRepository.findById(salesId) != null && !salesRepository.findById(salesId).isEmpty() ? salesRepository.findById(salesId).get() : null;
             if(sales != null){
+                if(sales.getTrxStatus().equalsIgnoreCase(TrxStatus.CANCELLED.name())){
+                    salesResp.setCode(TrxCode.TRX_CANNOT_BE_PROCEED.code());
+                    salesResp.setData(sales);
+                    salesResp.setErrors(null);
+                    salesResp.setMessage(TrxCode.TRX_CANNOT_BE_PROCEED.description() + " for transaction salesId: "+salesId);
+                    return salesResp;
+                }
+
                 BigDecimal totalChange = paymentRequest.getTotalPayment().subtract(sales.getTotalOrderPrice());
                 if(totalChange.compareTo(BigDecimal.ZERO) >= 0){
                     BeanUtils.copyProperties(paymentRequest, payment);

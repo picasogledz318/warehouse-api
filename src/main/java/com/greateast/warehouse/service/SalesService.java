@@ -8,6 +8,7 @@ import com.greateast.warehouse.model.entity.Payment;
 import com.greateast.warehouse.model.entity.Sales;
 import com.greateast.warehouse.model.entity.Variant;
 import com.greateast.warehouse.model.request.PaymentRequest;
+import com.greateast.warehouse.model.request.SalesCancellationRequest;
 import com.greateast.warehouse.model.request.SalesRequest;
 import com.greateast.warehouse.model.response.BaseResponseDto;
 import com.greateast.warehouse.repository.SalesRepository;
@@ -76,6 +77,42 @@ public class SalesService {
 
         return  resp;
     }
+
+    /**
+     * Sales order cancellation in warehouse.
+     * return sales information response with status 'CANCELLED' and remark
+     * Throws exception error sales cancellation.
+     */
+    public BaseResponseDto<Sales> salesOrderCancellation(SalesCancellationRequest salesCancellationRequest) {
+        BaseResponseDto<Sales> resp = new BaseResponseDto<>();
+        BaseResponseDto<Variant> varResp = new BaseResponseDto<>();
+        Sales sales = null;
+        try{
+            sales = salesRepository.findById(salesCancellationRequest.getSalesId()) != null && !salesRepository.findById(salesCancellationRequest.getSalesId()).isEmpty() ? salesRepository.findById(salesCancellationRequest.getSalesId()).get() : null;
+            if(sales != null){
+                sales.setTrxStatus(TrxStatus.CANCELLED.name());
+                sales.setRemark(salesCancellationRequest.getRemark());
+                salesRepository.save(sales);
+                resp.setCode(TrxCode.TRX_CANCELLED.code());
+                resp.setData(sales);
+                resp.setErrors(null);
+                resp.setMessage(TrxCode.TRX_CANCELLED.description());
+
+            } else {
+                resp.setCode(TrxCode.TRX_NOT_FOUND.code());
+                resp.setData(null);
+                resp.setErrors(null);
+                resp.setMessage(TrxCode.TRX_NOT_FOUND.description());
+            }
+
+        }catch (Exception err){
+            log.error("Error sales cancellation:{}, trace:{}",err.getMessage(), err.getStackTrace());
+            throw new RuntimeException("Error sales cancellation:"+err.getMessage());
+        }
+
+        return  resp;
+    }
+
 
 
     /**
