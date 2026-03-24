@@ -6,8 +6,8 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 /**
- * SalesRequest represents item's sales request from warehouse.
- * Example: Sales for many items such as: manuT-Shirt variant Black color, Shoes variant Adidas, Laptop variant Lenovo
+ * SalesCancellation Request represents cancellation sales request from warehouse.
+ * cancellation by salesId with remark
  */
 @Data
 public class SalesCancellationRequest extends Auditable {
